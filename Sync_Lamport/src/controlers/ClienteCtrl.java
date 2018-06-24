@@ -46,6 +46,7 @@ public class ClienteCtrl extends Cliente {
 			int ltMsg = 0;
 			int count = 0;
 
+			System.out.println("Send Process/Clock Value (s)/");
 			while (true) {
 				if (count == 0) {
 					new Thread(rMsg).sleep(valorClock);
@@ -57,11 +58,10 @@ public class ClienteCtrl extends Cliente {
 				}
 
 				if (count == 0)
-					saida.println(
-							"Send Process: " + this.getNome() + ", Clock value(ms) " + valorClock + "/ltMsg:" + ltMsg);
+					saida.println(this.getNome() + "          /          " + valorClock/1000);
 				else
-					saida.println("Send Process: " + this.getNome() + ", Clock value(ms) " + lt + "/ltMsg:" + ltMsg);
-
+					saida.println(this.getNome() + "          /          " + lt/1000);
+				
 				lt = Math.max(ltMsg, lt) + 1;
 
 				count++;

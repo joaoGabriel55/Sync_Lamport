@@ -19,6 +19,7 @@ public class ServidorCtrl extends Servidor {
 
 		try {
 
+			@SuppressWarnings("resource")
 			ServerSocket server = new ServerSocket(this.getPorta());
 			System.out.println("Porta " + this.getPorta() + " aberta!");
 
@@ -43,12 +44,14 @@ public class ServidorCtrl extends Servidor {
 	}
 	
 	public void distribuiMensagem(Socket clienteReq, String msg) {
-
+		System.out.println("Send Process/Clock Value (s)/");
 		for (Socket cliente : this.getClientes()) {
 			if(!cliente.equals(clienteReq)) {
 				try {
 					PrintStream ps = new PrintStream(cliente.getOutputStream());
 					ps.println(msg);
+					System.out.println(msg);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
