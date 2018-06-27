@@ -1,0 +1,1 @@
+Executar o "RunCliente.java" quatro vezes representando os clientes a enviarem mgs entre si.

@@ -19,6 +19,7 @@ public class ServidorCtrl extends Servidor {
 
 		try {
 
+			
 			@SuppressWarnings("resource")
 			ServerSocket server = new ServerSocket(this.getPorta());
 			System.out.println("Porta " + this.getPorta() + " aberta!");

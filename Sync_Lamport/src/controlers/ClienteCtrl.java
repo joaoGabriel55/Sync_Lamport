@@ -25,23 +25,18 @@ public class ClienteCtrl extends Cliente {
 	public void executa() throws UnknownHostException, IOException {
 
 		try {
-
+			// Aleatoria
 			Socket clienteSocket = new Socket(this.getHost(), this.getPorta());
 			Scanner teclado = new Scanner(System.in);
 			PrintStream saida = new PrintStream(clienteSocket.getOutputStream());
-
-			System.out.println("Processo:");
-
-			this.setNome(teclado.nextLine());
-
-			System.out.println("Processo, " + this.getNome() + ", Conectado!");
-
+			
 			RecebedorDeMensagemDoServidor rMsg = new RecebedorDeMensagemDoServidor(clienteSocket.getInputStream());
 			new Thread(rMsg).start();
 
-			int valorClock = getClockRandom(10, 3);
+			int valorClock = getClockRandom(10, 3) * 1000;
 
 			int lt = 0;
+			int ltPrevius = 0;
 			int ltMilis = 0;
 			int ltMsg = 0;
 			int count = 0;
@@ -52,17 +47,20 @@ public class ClienteCtrl extends Cliente {
 					new Thread(rMsg).sleep(valorClock);
 					lt = valorClock;
 				} else {
-					lt = lt + 1000;// ms
+					ltPrevius = lt;
+					if (ltPrevius < lt) {
+						lt = lt + 1000;// ms
+					}
 					ltMsg = lt;
 					new Thread(rMsg).sleep(lt);
 				}
 
 				if (count == 0)
-					saida.println(this.getNome() + "          /          " + valorClock/1000);
+					saida.println(this.getHost() + "/" + valorClock / 1000);
 				else
-					saida.println(this.getNome() + "          /          " + lt/1000);
-				
-				lt = Math.max(ltMsg, lt) + 1;
+					saida.println(this.getHost() + "/" + lt / 1000);
+
+				// lt = Math.max(ltMsg, lt) + 1;
 
 				count++;
 			}
@@ -73,12 +71,8 @@ public class ClienteCtrl extends Cliente {
 
 	/** Valor do clock aleatório (entre 3 e 10) */
 	public static int getClockRandom(int max, int min) {
-
-		int maxConv = max * 1000;
-		int minConv = min * 1000;
-
 		Random random = new Random();
-		return random.nextInt((maxConv - minConv) + 1000) + minConv;
+		return random.nextInt((max - min) + 1) + min;
 	}
 
 }
